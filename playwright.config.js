@@ -4,10 +4,11 @@ require('dotenv').config();
 module.exports = defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  reporter: 'html',
+  reporter: [['html', { open: 'never' }], ['allure-playwright']],
   use: {
     baseURL: process.env.URL || 'https://opensource-demo.orangehrmlive.com/',
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
     headless: false, // Set ke false agar browser muncul
     viewport: { width: 1280, height: 720 },
   },
