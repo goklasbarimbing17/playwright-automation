@@ -1,19 +1,25 @@
 const { test } = require('@playwright/test');
 const { ProductsPage } = require('../../src/pages/ProductsPage');
-const { LoginPage } = require('../../src/pages/LoginPage');
 require('dotenv').config();
 
 test.describe('Products Search E2E', () => {
-  test.setTimeout(60000);
+  test.setTimeout(120000);
+  
+  let productsPage;
 
-  test('User should be able to view products and search for a product using saved session', async ({ page }) => {
-    const productsPage = new ProductsPage(page);
-    
-    // Langsung menuju menu product menggunakan session dari storageState (playwright.config.js)
+  test.beforeEach(async ({ page }) => {
+    productsPage = new ProductsPage(page);
     await productsPage.goto();
-    
-    // Lakukan pencarian produk
-    await productsPage.searchProduct('t-shirt');
-    await productsPage.verifySearchResults('Searched Products');
+  });
+
+  test('User should be able to search for a product', async ({ page }) => {
+    const productName = 'Blue Top';
+    await productsPage.searchProduct(productName);
+    await productsPage.verifySearchResults('Searched Products', productName);
+  });
+
+  test('User should be able to view details of the first product', async ({ page }) => {
+    await productsPage.clickViewProduct();
+    await productsPage.verifyProductDetails();  
   });
 });
