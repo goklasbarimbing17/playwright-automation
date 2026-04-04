@@ -3,14 +3,19 @@ require('dotenv').config();
 
 module.exports = defineConfig({
   testDir: './tests',
-  fullyParallel: true,
+  fullyParallel: false,
+  workers: 1, // Penting agar browser hanya terbuka satu per satu
+  timeout: 60000,
+  expect: {
+    timeout: 10000,
+  },
   reporter: [['html', { open: 'never' }], ['allure-playwright']],
   use: {
-    baseURL: process.env.URL || 'https://opensource-demo.orangehrmlive.com/',
+    baseURL: process.env.TEST_URL || 'https://automationexercise.com/',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    headless: false, // Set ke false agar browser muncul
-    viewport: { width: 1280, height: 720 },
+    headless: false, 
+    viewport: null,
   },
 
   projects: [

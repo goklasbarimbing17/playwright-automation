@@ -1,0 +1,13 @@
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "fullName": "John Doe",
+  "email": "johndoe123@example.com",
+  "password": "Password123!",
+  "address": "123 Main St",
+  "country": "United States",
+  "state": "California",
+  "city": "Los Angeles",
+  "zipcode": "90001",
+  "mobile": "1234567890"
+}
