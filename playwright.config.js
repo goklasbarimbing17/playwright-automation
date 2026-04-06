@@ -22,7 +22,10 @@ module.exports = defineConfig({
     // Project khusus setup
     { 
       name: 'setup', 
-      testMatch: /auth\.setup\.js/ 
+      testMatch: /auth\.setup\.js/,
+      use:{
+        channel: 'chrome',
+      } 
     },
 
     // Project utama (E2E)

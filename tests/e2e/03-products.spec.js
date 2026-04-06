@@ -22,4 +22,19 @@ test.describe('Products Search E2E', () => {
     await productsPage.clickViewProduct();
     await productsPage.verifyProductDetails();  
   });
+
+  test('Add products in cart', async ({ page }) => {
+    const quantity = 3;
+    await page.waitForTimeout(2000);
+    const priceProduct = await productsPage.getProductPriceAsNumber();
+    await productsPage.addProductInCart(quantity);
+    await productsPage.clickCartMenu();
+    
+    await productsPage.verifyAddProductToCart();
+    await productsPage.verifyAllCartTotals();
+
+    console.log (`Price: Rs. ${priceProduct}`);
+  });
+
+  
 });
