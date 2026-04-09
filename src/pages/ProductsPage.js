@@ -1,5 +1,6 @@
 const { BasePage } = require('./BasePage');
 const { expect } = require('@playwright/test');
+const { FakerUtils } = require('../utils/FakerUtils');
 
 class ProductsPage extends BasePage {
   
@@ -25,8 +26,25 @@ class ProductsPage extends BasePage {
     this.cartMenu = page.locator("//a[normalize-space()='Cart']");
     this.productRow = page.locator('tr:has(.cart_price)');
     this.priceElement = page.locator("//td[@class='cart_price']//p[contains(text(),'Rs. 500')]")
+
+    //proceed to checkout product
+    this.proceedToCheckoutButton = page.locator('.btn.btn-default.check_out');
+    this.coloumComment = page.locator("textarea[name='message']");
+    this.placeOrderButton = page.locator("//a[normalize-space()='Place Order']");
+    this.nameOnCardField = page.locator("input[name='name_on_card']");
+    this.cardNumberField = page.locator("input[name='card_number']");
+    this.cvcField = page.locator("input[name='cvc']");
+    this.expirationMonth= page.locator("input[name='expiry_month']");
+    this.expirationYear = page.locator("input[name='expiry_year']");
+    this.payAndConfirmPayButton = page.locator("//button[@id='submit']");
+    this.msgOrderPlaced = page.locator("//b[normalize-space()='Order Placed!']")
+
+    //Download invoice
+    this.downloadInvoiceButton = page.locator('.btn.btn-default.check_out');
+    
   }
 
+  
   async goto() {
     await this.page.goto('/products');
   }
@@ -115,8 +133,50 @@ class ProductsPage extends BasePage {
       expect(actualTotal).toBe(expectedTotal);
     }
   }
-  
 
+  async clickProceedToCheckoutButton(){
+    await this.proceedToCheckoutButton.click();
+  }
+  
+  async inputComment(){
+    await this.coloumComment.fill(FakerUtils.getSubject());
+  }
+
+  async clickPlaceOrder(){
+    await this.placeOrderButton.click();
+  }
+
+  async inputNameOnCard(){
+    const cardname = FakerUtils.getCardName();
+    console.log (cardname);
+    await this.nameOnCardField.fill(cardname);
+    
+  }
+
+  async inputCardNumber(){
+    const cardNumber = FakerUtils.getCardNumber();
+    await this.cardNumberField.fill(cardNumber);
+  }
+
+  async inputExpirationField(){
+    const month = FakerUtils.getMonthExpiry();
+    const year = FakerUtils.getYearExpiry();
+    await this.expirationMonth.fill(month);
+    await this.expirationYear.fill(year);
+  }
+
+  async inputCvc(){
+    await this.cvcField.fill(FakerUtils.getRandomNumbers(3));
+  }
+
+  async clickPayAndConfirmOrderButton(){
+    await this.payAndConfirmPayButton.click();
+  }
+
+  async verifyCheckoutProduct(){
+    const actualMessage = await this.msgOrderPlaced.innerText();
+    expect(this.actualMessage).toBeVisible();
+  }
 }
 
 module.exports = { ProductsPage };

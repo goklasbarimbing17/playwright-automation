@@ -1,5 +1,7 @@
 const { faker } = require('@faker-js/faker');
 
+const futureDate = () => faker.date.future({ years: 5 });
+
 class FakerUtils {
   // Individual field generators
   static getName() { return faker.person.fullName(); }
@@ -17,6 +19,8 @@ class FakerUtils {
   static getMobileNumber() { return faker.phone.number(); }
   static getSubject() { return faker.lorem.sentence(); }
   static getMessage() { return faker.lorem.paragraph(); }
+  static getCardNumber() { return faker.finance.accountNumber(); }
+  static getCardName() { return faker.finance.accountName(); }
 
   // Helper to get full user profile object
   static getUserProfile() {
@@ -46,6 +50,37 @@ class FakerUtils {
       message: this.getMessage(),
       uploadFile: 'src/data/sample.txt'
     };
+  }
+
+
+  static getCardExpiry(){
+    // Generate tanggal acak di masa depan (maksimal 5 tahun dari sekarang)
+    // Ref: faker.date.future() menjamin tanggal tidak akan di masa lalu
+  
+
+    // Ambil Bulan: getMonth() mulai dari 0, jadi harus + 1. 
+    // padStart(2, '0') memastikan angka 5 menjadi "05"
+    const month = String(futureDate().getMonth() + 1).padStart(2, '0');
+
+    // Ambil Tahun: getFullYear() menghasilkan format 4 digit (contoh: "2029")
+    const year = String(futureDate().getFullYear());
+
+    // Kembalikan dalam bentuk object agar gampang dipecah saat dipanggil
+    return { month, year };
+  }
+
+  static getYearExpiry() {
+    return futureDate().getFullYear().toString();
+}
+
+// Untuk Bulan (Output: "08")
+  static getMonthExpiry() {
+    const month = futureDate().getMonth() + 1;
+    return month.toString().padStart(2, '0');
+  }
+
+  static getRandomNumbers(digit){
+    return faker.string.numeric(digit);
   }
 }
 

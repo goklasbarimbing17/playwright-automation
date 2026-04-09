@@ -36,5 +36,19 @@ test.describe('Products Search E2E', () => {
     console.log (`Price: Rs. ${priceProduct}`);
   });
 
-  
+  test('Process to checkout product', async({page}) => {
+    await productsPage.clickCartMenu();
+    await productsPage.clickProceedToCheckoutButton();
+    await productsPage.inputComment();
+    await productsPage.clickPlaceOrder();
+    await productsPage.inputNameOnCard();
+    await productsPage.inputCardNumber();
+    await productsPage.inputCvc();
+    await productsPage.inputExpirationField();
+    await productsPage.clickPayAndConfirmOrderButton();
+
+    //verify checkout Product
+    await productsPage.verifyCheckoutProduct();
+
+  })
 });
